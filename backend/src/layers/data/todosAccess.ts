@@ -2,25 +2,34 @@ import * as AWS  from 'aws-sdk'
 import * as AWSXRay from 'aws-xray-sdk'
 import { DocumentClient } from 'aws-sdk/clients/dynamodb'
 
-import {TodoItem} from "../../models/TodoItem.ts"
+import {TodoItem} from "../../models/TodoItem"
 
 const XAWS = AWSXRay.captureAWS(AWS)
 
 export class TodosAccess {
 
-    constructor(
+  constructor(
         private readonly docClient: DocumentClient = createDynamoDBClient(),
         private readonly todosTable = process.env.TODOS_TABLE) {
-    }
+  }
 
-    async create(item: TodoItem): Promise<TodoItem> {
+  async create(item: TodoItem): Promise<TodoItem> {
         await this.docClient.put({
           TableName: this.todosTable,
           Item: item
         }).promise()
     
         return item;
-    }
+  }
+
+  async remove(todoId: string) {
+      await this.docClient.delete({
+          TableName: this.todosTable,
+          Key: {
+              todoId
+          }
+      }).promise();
+  }
 
     async getTodos(): Promise<TodoItem[]> {
         console.log('Getting all todos')
@@ -33,15 +42,7 @@ export class TodosAccess {
         return items as Group[]
     }
 
-    async remove(todoId: string, userId:string) {
-        await this.docClient.delete({
-            TableName: this.todosTable,
-            Key: {
-                todoId,
-                userId
-            }
-        }).promise();
-    }
+    
 
     async modify(todoId:string, userId:string, updatedTodo){
         await this.docClient.update({

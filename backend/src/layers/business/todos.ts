@@ -28,3 +28,9 @@ export async function create(createTodoRequest: CreateTodoRequest,event: APIGate
         ...createTodoRequest
     })
 }
+
+
+export async function remove(todoId){
+    
+    await todosAccess.remove(todoId)
+}
