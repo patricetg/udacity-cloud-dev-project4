@@ -7,6 +7,7 @@ import {TodoItem} from "../../models/TodoItem"
 import { CreateTodoRequest } from '../../requests/CreateTodoRequest'
 import { getUserId } from '../../auth/utils'
 import { TodosAccess } from '../data/todosAccess'
+import { UpdateTodoRequest } from '../../requests/UpdateTodoRequest'
 
 
 const todosAccess= new TodosAccess()
@@ -37,8 +38,15 @@ export async function create(createTodoRequest: CreateTodoRequest,event: APIGate
     })
 }
 
+export async function modify(event: APIGatewayProxyEvent,todoId:string, updatedTodo: UpdateTodoRequest){
+    
+    const userId = getUserId(event);
+    
+    return await todosAccess.modify(todoId, userId, updatedTodo)
+}
 
-export async function remove(todoId){
+
+export async function remove(todoId:string){
     
     await todosAccess.remove(todoId)
 }

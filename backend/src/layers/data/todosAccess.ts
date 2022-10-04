@@ -3,6 +3,7 @@ import * as AWSXRay from 'aws-xray-sdk'
 import { DocumentClient } from 'aws-sdk/clients/dynamodb'
 
 import {TodoItem} from "../../models/TodoItem"
+import { UpdateTodoRequest } from '../../requests/UpdateTodoRequest'
 
 const XAWS = AWSXRay.captureAWS(AWS)
 
@@ -32,39 +33,36 @@ export class TodosAccess {
   }
 
     async getTodos(): Promise<TodoItem[]> {
-        console.log('Getting all todos')
-    
+      
         const result = await this.docClient.scan({
           TableName: this.todosTable
         }).promise()
     
         const items = result.Items
-        return items as Group[]
+        return items as TodoItem[]
     }
 
     
 
-    async modify(todoId:string, userId:string, updatedTodo){
-        await this.docClient.update({
-            TableName: this.todosTable,
-            Key: {
-                todoId,
-                userId
-            },
-            UpdateExpression: "set #name = :name, #dueDate = :dueDate, #done = :done, #attachmentUrl = :attachmentUrl",
-            ExpressionAttributeValues: {
-                  ":name": updatedTodo.name,
-                  ":dueDate": updatedTodo.dueDate,
-                  ":done": updatedTodo.done,
-                  ":attachmentUrl": updatedTodo.attachmentUrl,
-            },
-            ExpressionAttributeNames: {
-                  "#name": "name",
-                  "#dueDate": "dueDate",
-                  "#done": "done",
-                  "#attachmentUrl": "attachmentUrl",
-            },
-            ReturnValues:"UPDATED_NEW"
+    async modify(todoId:string, userId:string, updatedTodo:UpdateTodoRequest){
+        return await this.docClient.update({
+              TableName: this.todosTable,
+              Key: {
+                  todoId,
+                  userId
+              },
+              UpdateExpression: "set #name = :name, #dueDate = :dueDate, #done = :done",
+              ExpressionAttributeValues: {
+                    ":name": updatedTodo.name,
+                    ":dueDate": updatedTodo.dueDate,
+                    ":done": updatedTodo.done,
+              },
+              ExpressionAttributeNames: {
+                    "#name": "name",
+                    "#dueDate": "dueDate",
+                    "#done": "done",
+              },
+              ReturnValues:"UPDATED_NEW"
           }).promise();
     }
 
