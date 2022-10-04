@@ -45,6 +45,10 @@ export async function modify(event: APIGatewayProxyEvent,todoId:string, updatedT
     return await todosAccess.modify(todoId, userId, updatedTodo)
 }
 
+export async function getTodos(event: APIGatewayProxyEvent): Promise<TodoItem[]> {
+    const userId = getUserId(event);
+    return await todosAccess.getTodos(userId);
+}
 
 export async function remove(todoId:string){
     
