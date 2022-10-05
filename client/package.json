@@ -24,7 +24,9 @@
     "@types/styled-components": "^5.1.26",
     "auth0-js": "^9.19.1",
     "axios": "^0.21.4",
-    "typescript": "3.8.3"
+    "typescript": "3.8.3",
+    "@types/express": "^4.17.14",
+    "@types/express-serve-static-core":"4.17.20"
   },
   "scripts": {
     "start": "react-scripts start",

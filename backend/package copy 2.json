@@ -27,8 +27,6 @@
     "serverless-webpack": "^5.10.0",
     "ts-loader": "^5.4.5",
     "typescript": "3.8.3",
-    "@types/express": "^4.17.14",
-    "@types/express-serve-static-core":"4.17.20",
     "webpack": "^5.74.0"
   },
   "author": "Ivan Mushketyk",

@@ -1,2 +1,3 @@
 https://www.freecodecamp.org/news/learn-serverless-aws-by-building-7-projects/
 
+sls config credentials --provider aws --key YOUR_ACCESS_KEY_ID --secret YOUR_SECRET_KEY --profile serverless
