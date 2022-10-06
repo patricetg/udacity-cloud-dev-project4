@@ -50,9 +50,9 @@ export async function getTodos(event: APIGatewayProxyEvent): Promise<TodoItem[]>
     return await todosAccess.getTodos(userId);
 }
 
-export async function remove(todoId:string){
-    
-    await todosAccess.remove(todoId)
+export async function remove(todoId:string,event: APIGatewayProxyEvent){
+    const userId = getUserId(event);
+    await todosAccess.remove(todoId,userId)
 }
 
 export async function createAttachmentPresignedUrl(todoId:string): Promise<string> {
